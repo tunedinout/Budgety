@@ -1,0 +1,206 @@
+.back-img {
+  position: absolute;
+  height: 36%;
+  overflow: hidden;
+  width: 100%;
+  background-image: url("https://wpmisc.com/sites/default/files/styles/1920x1080/public/wallpaper/nature/71928/evening-hd-wallpapers-71928-3883412.png?itok=WOPXENH6");
+  background-color: #008060;
+}
+
+.info-text {
+  position: relative;
+  top: 30px;
+  color: whitesmoke;
+  text-align: center;
+  font-size: 20px;
+  font-family: "Times New Roman", Times, serif;
+}
+.amount {
+  font-family: fantasy;
+  letter-spacing: 5px;
+  font-size: 25px;
+}
+.panel-group {
+  width: 380px;
+
+  margin-top: 30px;
+  /*
+    below three lines to align the element in the center 
+  */
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: 10px;
+}
+#expense-panel {
+  background-color: #ff6b7c;
+  margin-top: 15px;
+  border-radius: 0px;
+  cursor: pointer;
+}
+
+#income-panel {
+  background-color: #2eeac8;
+  border-radius: 0px;
+  cursor: pointer;
+}
+.panel-heading {
+  width: fit-content;
+  height: 50px;
+}
+#panel-income-text {
+  width: 120px;
+  text-align: left;
+  letter-spacing: 5px;
+  font-family: fantasy;
+}
+
+#panel-expense-text {
+  width: 120px;
+  text-align: left;
+  letter-spacing: 5px;
+  font-family: fantasy;
+  transform: translateX(-3%);
+}
+
+#panel-income-amount {
+  width: 180px;
+  margin-top: 3px;
+  margin-left: 20px;
+  text-align: left;
+  font-size: small;
+  font-family: fantasy;
+  letter-spacing: 5px;
+}
+
+#panel-expense-amount {
+  width: 180px;
+  margin-top: 3px;
+
+  margin-left: 20px;
+  text-align: left;
+  font-family: fantasy;
+  letter-spacing: 5px;
+  float: left;
+  transform: translateX(-5%);
+}
+
+#panel-expense-percentage {
+  background-color: #ff8493;
+  color: white;
+  float: right;
+  margin-left: 0px;
+  margin-right: 10px;
+  height: 18px;
+  width: 60px;
+  font-size: 13px;
+  font-family: fantasy;
+  text-align: center;
+  transform: translateY(-23px);
+}
+
+.add-btn {
+  /*font size controls the size of check image*/
+  font-size: 35px;
+  background: none;
+  border: none;
+  color: #28b9b5;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  /* line-height: 1.1; */
+  margin-left: 10px;
+}
+#select-inc-exp {
+  width: 57px;
+  border-radius: 5px;
+  margin-left: 35%;
+  display: inline-block;
+  border: solid;
+  border-color: #e0eaf9;
+  border-block-color: #e0eaf9;
+
+  cursor: pointer;
+}
+
+#desc-inc-exp {
+  border-radius: 7px;
+  border-width: 0px;
+  height: 35px;
+  letter-spacing: 2px;
+  width: 270px;
+  display: inline-block;
+  border: solid;
+  border-color: #e0eaf9;
+  border-block-color: #e0eaf9;
+  cursor: pointer;
+}
+
+#amount-inc-exp {
+  border-radius: 10px;
+  border-width: 1px;
+  height: 35px;
+  letter-spacing: 2px;
+  width: 100px;
+  display: inline-block;
+  border: solid;
+  border-color: #e0eaf9;
+  border-block-color: #e0eaf9;
+  cursor: pointer;
+}
+.line-below-input {
+  width: 37%;
+  border-bottom: solid;
+  border-bottom-color: #42f4cb;
+  border-bottom-width: 1px;
+  margin-left: 33%;
+}
+
+#income-list {
+  margin-left: 25%;
+  margin-top: 30px;
+  width: 30%;
+  border: none;
+  position: absolute;
+}
+.list-no-border {
+  border-right: none;
+  border-left: none;
+  border-bottom-color: #f8e4da;
+  border-top-color: #f8e4da;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.income-list-heading {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  letter-spacing: 3px;
+  background: none;
+  color: #01a592;
+  font-size: 18px;
+  font-weight: bold;
+  border-top: none;
+}
+
+#expense-list {
+  position: absolute;
+  margin-left: 60%;
+  margin-top: 30px;
+  width: 30%;
+  border: none;
+  display: inline-block;
+}
+
+.expense-list-heading {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  letter-spacing: 3px;
+  background: none;
+  color: #ff6b7c;
+  font-size: 18px;
+  font-weight: bold;
+  border-top: none;
+}
+.list-group-item {
+  background-color: #f8ebe311;
+}
