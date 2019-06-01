@@ -108,13 +108,17 @@ var dataController = (function() {
       };
     },
     deleteItem: function(type, id) {
-      for (var i = 0; i < data.allItems[type].length; i++) {
-        el = data.allItems[type][i];
-        if (el.id === id) {
-          data.allItems[type].splice(i, 1);
-          break;
-        }
-      }
+      console.log("receieved type = " + type);
+      console.log("receieved id = " + id);
+      //   for (var i = 0; i < data.allItems[type].length; i++) {
+      //     el = data.allItems[type][i];
+      //     if (el.id === id) {
+      //       data.allItems[type].splice(i, 1);
+      //       break;
+      //     }
+      //   }
+
+      data.allItems[type].splice(id, 1);
       return {
         type: type,
         id: id

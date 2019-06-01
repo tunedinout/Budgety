@@ -21,7 +21,7 @@ var UIController = (function() {
     listItemClasses: ["list-group-item", "list-no-border"],
     buttonIconHtml: '<i class="icon ion-close-circled"></i>'
   };
-  var nodeForEach = function(node) {};
+
   //amount string always with a sign like '+ 799'
   //minimum length of amount string is
   var getRupeeSignHTMLAndText = function(amountString, fontSize) {
@@ -51,6 +51,7 @@ var UIController = (function() {
       incListPrefix: "inc-"
     };
   })();
+
   return {
     /**
      * @param
@@ -137,7 +138,14 @@ var UIController = (function() {
      * @param {string} type
      */
 
-    addListItem: function(id, description, amount, percentage, type) {
+    addListItem: function(
+      id,
+      description,
+      amount,
+      percentage,
+      type,
+      clickFunction
+    ) {
       //set the proper format of the amount in rupees
 
       var listEl = document.createElement("LI");
@@ -207,6 +215,8 @@ var UIController = (function() {
         amtEl.style.transform = "translateX(0%)";
         perEl.style.transform = "translateX(0%)";
       });
+
+      btnEl.addEventListener("click", clickFunction);
     },
     /**
      *
