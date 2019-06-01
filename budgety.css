@@ -15,7 +15,21 @@
   font-size: 20px;
   font-family: "Times New Roman", Times, serif;
 }
+.info-text::after {
+  position: relative;
+  top: 30px;
+  color: whitesmoke;
+  text-align: center;
+  font-size: 20px;
+  font-family: "Times New Roman", Times, serif;
+}
+
 .amount {
+  font-family: fantasy;
+  letter-spacing: 5px;
+  font-size: 25px;
+}
+.amount ::after {
   font-family: fantasy;
   letter-spacing: 5px;
   font-size: 25px;
@@ -92,7 +106,7 @@
   margin-left: 0px;
   margin-right: 10px;
   height: 18px;
-  width: 60px;
+  width: 80px;
   font-size: 13px;
   font-family: fantasy;
   text-align: center;
@@ -111,45 +125,63 @@
   /* line-height: 1.1; */
   margin-left: 10px;
 }
+.add-btn:active {
+  transform: translateY(5px);
+}
 #select-inc-exp {
-  width: 57px;
-  border-radius: 5px;
   margin-left: 35%;
+  margin-right: 2%;
+  font-size: 15px;
   display: inline-block;
+  /* border: none;
   border: solid;
-  border-color: #e0eaf9;
-  border-block-color: #e0eaf9;
-
+  border-color: #e0eaf9; */
+  /* font-stretch: normal;
+  font-stretch: ultra-condensed; */
   cursor: pointer;
+  font-family: fantasy;
 }
 
 #desc-inc-exp {
-  border-radius: 7px;
-  border-width: 0px;
-  height: 35px;
-  letter-spacing: 2px;
+  height: 40px;
   width: 270px;
+  letter-spacing: 1px;
   display: inline-block;
-  border: solid;
-  border-color: #e0eaf9;
-  border-block-color: #e0eaf9;
+  /* border-color: green; */
+  /* border: solid; */
+  margin: 0 auto;
+  border: none; /* <-- This thing here  removes any already present border styling*/
+  border: solid 1px rgb(182, 163, 250);
+  /* border-radius: 10px; */
+  border-right: none;
+  border-left: none;
   cursor: pointer;
+  font-style: normal;
+  font-stretch: normal;
+  font-stretch: ultra-condensed;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 #amount-inc-exp {
-  border-radius: 10px;
-  border-width: 1px;
-  height: 35px;
+  height: 40px;
+  width: 90px;
   letter-spacing: 2px;
-  width: 100px;
   display: inline-block;
-  border: solid;
-  border-color: #e0eaf9;
-  border-block-color: #e0eaf9;
+  /* border-color: green; */
+  /* border: solid; */
+  margin: 0;
+  margin-left: 1%;
+  border: none; /* <-- This thing here */
+  border: solid rgb(182, 163, 250);
+  /* border-radius: 10px; */
+  border-width: 1px;
+  border-right: none;
+  border-left: none;
   cursor: pointer;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 .line-below-input {
-  width: 37%;
+  width: 42%;
   border-bottom: solid;
   border-bottom-color: #42f4cb;
   border-bottom-width: 1px;
@@ -157,9 +189,9 @@
 }
 
 #income-list {
-  margin-left: 25%;
+  margin-left: 5%;
   margin-top: 30px;
-  width: 30%;
+  width: 600px;
   border: none;
   position: absolute;
 }
@@ -182,15 +214,6 @@
   border-top: none;
 }
 
-#expense-list {
-  position: absolute;
-  margin-left: 60%;
-  margin-top: 30px;
-  width: 30%;
-  border: none;
-  display: inline-block;
-}
-
 .expense-list-heading {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
@@ -203,4 +226,88 @@
 }
 .list-group-item {
   background-color: #f8ebe311;
+}
+
+#expense-list {
+  position: absolute;
+  margin-left: 50%;
+  margin-top: 30px;
+  width: 620px;
+  border: none;
+  display: inline-block;
+}
+
+.list-inc-description {
+  position: relative;
+  display: inline-block;
+  width: 320px;
+}
+/* .list-inc-description::after {
+  position: relative;
+  display: inline-block;
+  width: 320px;
+} */
+.list-inc-amount {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  font-size: 15px;
+  color: #01a592;
+  font-family: fantasy;
+  letter-spacing: 3px;
+}
+
+/* .list-inc-amount ::after {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  font-size: 15px;
+} */
+
+.clear-inc-btn {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 10px;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: green;
+}
+
+.list-exp-description {
+  position: relative;
+  display: inline-block;
+  width: 320px;
+}
+.list-exp-amount {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  font-size: 15px;
+  color: #ff6b7c;
+  font-family: fantasy;
+  letter-spacing: 3px;
+}
+.list-exp-percentage {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  color: red;
+  font-family: fantasy;
+  font-size: 15px;
+  letter-spacing: 3px;
+}
+.clear-exp-btn {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 10px;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: red;
+}
+
+.ion-ios-close-empty {
 }

@@ -41,9 +41,9 @@
   <body>
     <div class="back-img">
       <div class="info-text">
-        <p>Available Budget in September 2016:</p>
-        <div>
-          <p class="amount">+30000.00</p>
+        <p id="info-text-line">Available Budget in September 2016:</p>
+        <div class="amount">
+          <p id="info-text-amount">+30000.00</p>
         </div>
       </div>
 
@@ -82,29 +82,54 @@
     </div>
 
     <div class="new-panel" style="margin-top:280px;">
-      <select class="form-control" id="select-inc-exp">
-        <option>+</option>
-        <option>-</option>
-      </select>
+      <label class="item item-input item-select" id="select-inc-exp">
+        <select id="select-element">
+          <option disabled selected>Type</option>
+          <option>+</option>
+          <option>-</option>
+        </select>
+      </label>
 
       <input type="text" placeholder="Add a description" id="desc-inc-exp" />
 
-      <input type="number" placeholder="Value" id="amount-inc-exp" />
+      <lable class="item item-input">
+        <input type="number" placeholder="Value" id="amount-inc-exp" />
+      </lable>
 
       <button class="add-btn">
-        <i class="ion-ios-checkmark-outline"></i>
+        <i class="icon ion-ios-checkmark-empty"></i>
       </button>
     </div>
     <div class="line-below-input"></div>
     <div>
-      <ul class="list-group" id="income-list">
+      <ul class="list-group" id="income-list" style="width:530px;">
         <li
           class="list-group-item income-list-heading list-no-border "
           style="background: none;"
         >
           INCOMES
         </li>
-        <li class="list-group-item list-no-border">Dapibus ac facilisis in</li>
+        <!-- <li class="list-group-item list-no-border">Dapibus ac facilisis in</li> -->
+        <li class="list-group-item list-no-border" id="inc-1">
+          <div class="list-inc-description" id="list-inc-description-1">
+            Dapibus ac facilisis in sfsdfsdfs sfdfs!!
+          </div>
+          <div
+            style="width:150px"
+            class="list-inc-amount"
+            id="list-inc-amount-1"
+          >
+            +100000000.00
+          </div>
+
+          <button
+            class="clear-inc-btn"
+            id="clear-inc-btn-1"
+            style="width:20px;"
+          >
+            <i class="icon ion-ios-close-empty"></i>
+          </button>
+        </li>
       </ul>
 
       <ul class="list-group" id="expense-list">
@@ -114,8 +139,22 @@
         >
           EXPENSES
         </li>
-        <li class="list-group-item list-no-border">Dapibus ac facilisis in</li>
+        <li class="list-group-item list-no-border" id="exp-1">
+          <div class="list-exp-description" id="list-exp-description-1">
+            Dapibus ac facilisis in sfsdfsdfs sfdfs!!
+          </div>
+          <div class="list-exp-amount" id="list-exp-amount-1">
+            +100000000.00
+          </div>
+          <div class="list-exp-percentage" id="list-exp-percentage-1">
+            - 100%
+          </div>
+          <button class="clear-exp-btn" id="clear-exp-btn-1">
+            <i class="icon ion-ios-close-empty"></i>
+          </button>
+        </li>
       </ul>
     </div>
+    <script src="app.js"></script>
   </body>
 </html>

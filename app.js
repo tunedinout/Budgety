@@ -1,70 +1,274 @@
 var UIController = (function() {
-  var DOMStrings = {
-    transactionTypeId: "#select-inc-exp",
-    descriptionId: "#desc-inc-exp",
-    amountId: "#amount-inc-exp",
+  var DOMstrings = {
+    monthOfyearId: "info-text-line",
+    totalBudgetId: "info-text-amount",
+    transactionTypeId: "select-element",
+    descriptionId: "desc-inc-exp",
+    amountId: "amount-inc-exp",
     addButtonClass: ".add-btn",
-    incomeListId: "#income-list",
-    expenseListId: "#expense-list",
-    totalIncomeId: "#income-amount",
-    totalExpenseId: "#expense-amount",
-    expensePercentageId: "#panel-expense-percentage",
-    totalBudgetclass: ".amount",
-    firstLineClass: ".info-text"
+    incomeListId: "income-list",
+    expenseListId: "expense-list",
+    totalIncomeId: "panel-income-amount",
+    totalExpenseId: "panel-expense-amount",
+    expensePercentageId: "panel-expense-percentage",
+    listIncDescClass: "list-inc-description",
+    listIncAmntClass: "list-inc-amount",
+    listIncBtnClass: "clear-inc-btn",
+    listExpDescClass: "list-exp-description",
+    listExpAmntClass: "list-exp-amount",
+    listExpBtnClass: "clear-exp-btn",
+    listExpPerClass: "list-exp-percentage",
+    listItemClasses: ["list-group-item", "list-no-border"],
+    buttonIconHtml: '<i class="icon ion-close-circled"></i>'
+  };
+  var nodeForEach = function(node) {};
+  //amount string always with a sign like '+ 799'
+  //minimum length of amount string is
+  var getRupeeSignHTMLAndText = function(amountString, fontSize) {
+    /**
+     * amount string is of minum length three '+ 5' or '- 5'
+     */
+    var font_size = fontSize === undefined ? "30px" : fontSize;
+
+    var rupeeSignHtml = "<span >&#8377;</span>";
+    var finalText =
+      amountString.slice(0, 2) + rupeeSignHtml + amountString.slice(2);
+    return finalText;
   };
 
+  var nodes = (function() {
+    return {
+      budget: document.getElementById(DOMstrings.totalBudgetId),
+      totalInc: document.getElementById(DOMstrings.totalIncomeId),
+      totalExp: document.getElementById(DOMstrings.totalExpenseId),
+      totalPer: document.getElementById(DOMstrings.expensePercentageId),
+      expList: document.getElementById(DOMstrings.expenseListId),
+      incList: document.getElementById(DOMstrings.incomeListId),
+      descInput: document.getElementById(DOMstrings.descriptionId),
+      amtInput: document.getElementById(DOMstrings.amountId),
+      selInput: document.getElementById(DOMstrings.transactionTypeId),
+      expListPrefix: "exp-",
+      incListPrefix: "inc-"
+    };
+  })();
   return {
+    /**
+     * @param
+     * @returns
+     *
+     */
+    displayMonthYear: function() {
+      var dateNode = document.getElementById(DOMstrings.monthOfyearId);
+
+      //date
+      var date = new Date();
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
+      var month = date.getMonth();
+      var year = date.getFullYear();
+
+      dateNode.textContent =
+        "Available budget in " + months[month] + " " + year;
+    },
+    displaybudget: function(dataObject) {
+      var totalIncome, totalBudget, totalExpense, percentage;
+      totalIncome = "+ " + dataObject.totals.inc;
+      totalExpense = "- " + dataObject.totals.exp;
+
+      if (dataObject.budget === 0) {
+        totalBudget = "+ 0000.00";
+      } else {
+        totalBudget =
+          dataObject.budget > 0
+            ? "+ " + dataObject.budget
+            : "- " + dataObject.budget;
+      }
+
+      if (dataObject.percentage === -1) {
+        percentage = "---";
+      } else {
+        percentage = "-" + dataObject.percentage + "%";
+      }
+
+      this.displayMonthYear();
+
+      nodes.budget.innerHTML = getRupeeSignHTMLAndText(totalBudget);
+      nodes.totalInc.innerHTML = getRupeeSignHTMLAndText(totalIncome);
+      nodes.totalExp.innerHTML = getRupeeSignHTMLAndText(totalExpense);
+      nodes.totalPer.textContent = percentage;
+
+      //re-evalute exp percentage
+      console.log(dataObject);
+      for (var id = 0; id < dataObject.allItems.exp.length; id++) {
+        var percentElement = document.getElementById(
+          DOMstrings.listExpPerClass + "-" + id
+        );
+        percentElement.textContent =
+          "- " + dataObject.allItems.exp[id].percentage;
+      }
+    },
     getInput: function() {
+      var el = document.getElementById(DOMstrings.transactionTypeId);
+      var typeText = el.options[el.selectedIndex].value;
       return {
-        type: document.getElementById(DOMStrings.transactionTypeId).value,
-        description: document.getElementById(DOMStrings.descriptionId).value,
-        amount: document.getElementById(DOMStrings.amountId).value
+        type: typeText,
+        description: document.getElementById(DOMstrings.descriptionId).value,
+        amount: parseInt(document.getElementById(DOMstrings.amountId).value, 10)
       };
     },
+    /**
+     *
+     * @param {string} id
+     * @param {string} description
+     * @param {string} amount
+     * @param {string} percentage
+     * @param {string} type
+     */
 
-    addListItem: function(content, id) {
-      var node = document.createElement("LI");
-      node.setAttribute("id", id);
-      var textNode = document.createTextNode(content);
-      node.appendChild(textNode);
-      node.classList.add("list-group-item list-no-border");
-      document.getElementById(DOMStrings.incomeListId).appendChild(node);
+    addListItem: function(id, description, amount, percentage, type) {
+      //set the proper format of the amount in rupees
+
+      var listEl = document.createElement("LI");
+      var descEl = document.createElement("DIV");
+      var amtEl = document.createElement("DIV");
+      var perEl = document.createElement("DIV");
+      var btnEl = document.createElement("BUTTON");
+
+      for (var i = 0; i < DOMstrings.listItemClasses.length; i++)
+        listEl.classList.add(DOMstrings.listItemClasses[i]);
+
+      if (type === "exp") {
+        amount = "- " + amount;
+        listEl.setAttribute("id", nodes.expListPrefix + id);
+        descEl.setAttribute("id", DOMstrings.listExpDescClass + "-" + id);
+        amtEl.setAttribute("id", DOMstrings.listExpAmntClass + "-" + id);
+        btnEl.setAttribute("id", DOMstrings.listExpBtnClass + "-" + id);
+        perEl.setAttribute("id", DOMstrings.listExpPerClass + "-" + id);
+
+        descEl.classList.add(DOMstrings.listExpDescClass);
+        amtEl.classList.add(DOMstrings.listExpAmntClass);
+        btnEl.classList.add(DOMstrings.listExpBtnClass);
+        perEl.classList.add(DOMstrings.listExpPerClass);
+      } else {
+        amount = "+ " + amount;
+        listEl.setAttribute("id", nodes.incListPrefix + id);
+        descEl.setAttribute("id", DOMstrings.listIncDescClass + "-" + id);
+        amtEl.setAttribute("id", DOMstrings.listIncAmntClass + "-" + id);
+        btnEl.setAttribute("id", DOMstrings.listIncBtnClass + "-" + id);
+
+        descEl.classList.add(DOMstrings.listIncDescClass);
+        amtEl.classList.add(DOMstrings.listIncAmntClass);
+        btnEl.classList.add(DOMstrings.listIncBtnClass);
+      }
+
+      btnEl.innerHTML = DOMstrings.buttonIconHtml;
+
+      descEl.textContent = description;
+
+      amtEl.innerHTML = getRupeeSignHTMLAndText(amount);
+      console.log(percentage + "%");
+
+      perEl.textContent = percentage;
+
+      listEl.appendChild(descEl);
+      listEl.appendChild(amtEl);
+      if (type === "exp") listEl.appendChild(perEl);
+      listEl.appendChild(btnEl);
+
+      if (type === "inc") {
+        nodes.incList.appendChild(listEl);
+      } else {
+        nodes.expList.appendChild(listEl);
+      }
+
+      //make the button element appear on hover
+      btnEl.style.visibility = "hidden";
+
+      listEl.addEventListener("mouseover", function() {
+        btnEl.style.visibility = "visible";
+
+        amtEl.style.transform = "translateX(-20%)";
+        perEl.style.transform = "translateX(-90%)";
+      });
+      listEl.addEventListener("mouseout", function() {
+        btnEl.style.visibility = "hidden";
+        amtEl.style.transform = "translateX(0%)";
+        perEl.style.transform = "translateX(0%)";
+      });
+    },
+    /**
+     *
+     * @param {string} id
+     * @param {string} type
+     */
+    clearItem: function(id, type) {
+      var node;
+      if (type === "inc") {
+        node = nodes.incList;
+      } else {
+        node = nodes.expList;
+      }
+      node.removeChild(id);
     },
 
-    removeListItem: function(id) {
-      var node = document.getElementById(DOMStrings.incomeListId);
-      if (budgetyController.getNumbersOfItemInListById(id) > 1)
-        node.removeChild(id);
-      else node.innerHTML = "";
+    clearInputFields: function() {
+      nodes.descInput.value = "";
+      nodes.amtInput.value = "";
     },
-    setTotalIncome: function(totalIncome) {
-      var node = document.getElementById(DOMStrings.totalIncomeId);
-      node.textContent = "+ " + totalIncome;
-    },
-    setTotalExpense: function(totalExpense) {
-      var node = document.getElementById(DOMStrings.totalExpenseId);
-      node.textContent = "- " + totalExpense;
-    },
-    setExpensePercentage: function(percentage) {
-      var node = document.getElementById(DOMStrings.expensePercentageId);
-      node.textContent = percentage + "%";
-    },
-    setBudget: function(totalBudget) {
-      var node = document.getElementById(DOMStrings.totalBudgetclass);
-      node.textContent = totalBudget;
-    },
+
     getDOMStrings: function() {
-      return DOMStrings;
+      return DOMstrings;
+    },
+
+    init: function() {
+      this.displayMonthYear();
+      this.displaybudget({
+        allItems: {
+          inc: [],
+          exp: []
+        },
+        totals: {
+          inc: 0,
+          exp: 0
+        },
+        budget: 0,
+        percentage: -1
+      });
+      //clear the lists
+      //childNodes array  always contains all  the new line characters
+      //console.log(nodes.incList.childNodes);
+      var incListHead = nodes.incList.childNodes[1];
+      nodes.incList.innerHTML = "";
+      nodes.incList.appendChild(incListHead);
+
+      var expListHead = nodes.expList.childNodes[1];
+      nodes.expList.innerHTML = "";
+      nodes.expList.appendChild(expListHead);
+      nodes.selInput.value = "";
+      nodes.descInput.value = "";
     }
   };
 })();
 
-var budgetyController = (function() {
+var dataController = (function() {
   //var getNumbersOfItemInListById
   var Expense = function(id, description, value) {
     this.id = id;
     this.description = description;
     this.value = value;
+    this.percentage = -1;
   };
 
   Expense.prototype.calcPercentage = function(totalIncome) {
@@ -95,29 +299,55 @@ var budgetyController = (function() {
     percentage: -1
   };
 
-  //helper functions
+  /**
+   *
+   * @param {"inc" or "exp"} type
+   */
   var calculateTotal = function(type) {
     var sum = 0;
-    data.allItems[type].array.forEach(element => {
-      sum += element.value;
-    });
-
-    data.totals[type] = sum;
-  };
-
-  var findElementIndexById = function(type, id) {
-    //element not found
-    var index = -1;
     for (var i = 0; i < data.allItems[type].length; i++) {
-      if (data.allItems[type][i].id === id) index = i;
+      sum += data.allItems[type][i].value;
     }
-    return index;
+    data.totals[type] = sum;
+    return sum;
   };
 
   return {
+    init: function() {
+      data.allItems.inc = [];
+      data.allItems.exp = [];
+      data.totals.inc = 0;
+      data.totals.exp = 0;
+      data.budget = 0;
+      data.percentage = -1;
+    },
+    /**
+     * @description calculates and stores all income and expense
+     */
+    calculateBudget: function() {
+      data.budget = calculateTotal("inc") - calculateTotal("exp");
+
+      for (var i = 0; i < data.allItems.exp.length; i++)
+        data.allItems.exp[i].calcPercentage(data.totals.inc);
+
+      var sumOfPercent = 0;
+      for (var i = 0; i < data.allItems.exp.length; i++)
+        sumOfPercent += data.allItems.exp[i].percentage;
+      data.percentage = sumOfPercent;
+      // console.log(typeof data.budget);
+      // console.log(typeof data.allItems["inc"][0].value);
+    },
+
+    /**
+     *
+     * @param {string} type
+     * @param {string} desc
+     * @param {number} value
+     */
     addItem: function(type, desc, value) {
       //create new Id
       var id;
+      var percentage = -1;
       if (data.allItems[type].length > 0) {
         //get the id of the last element and increment by 1
         id = data.allItems[type][data.allItems[type].length - 1].id + 1;
@@ -129,31 +359,105 @@ var budgetyController = (function() {
       //create the relevant income or expense object
       if (type === "inc") {
         newItem = new Income(id, desc, value);
-      } else newITem = new Expense(id, desc, value);
+      } else newItem = new Expense(id, desc, value);
 
       data.allItems[type].push(newItem);
+
+      return {
+        id: id,
+        type: type,
+        description: desc,
+        percentage: percentage,
+        amount: value
+      };
     },
     deleteItem: function(type, id) {
       for (var i = 0; i < data.allItems[type].length; i++) {
-        element = data.allItems[type][i];
-        if (element.id === id) {
+        el = data.allItems[type][i];
+        if (el.id === id) {
           data.allItems[type].splice(i, 1);
           break;
         }
       }
+      return {
+        type: type,
+        id: id
+      };
     },
-    calculateBudget: function() {
-      var totalIncome = calculateTotal("inc");
-      var totalExpense = calculateTotal("inc");
-      var budget = totalIncome - totalExpense;
-      data.budget = budget;
-    },
-    calculatePercentage: function() {},
 
     getBudget: function() {
       return data.budget;
+    },
+    getTotals: function(type) {
+      return data.totals[type];
+    },
+    getPercentage: function() {
+      return data.percentage;
+    },
+    getDataObject: function() {
+      return data;
     }
   };
 })();
 
-var appController = (function() {})();
+var appController = (function() {
+  var DOMstrings = UIController.getDOMStrings();
+
+  var nodes = {
+    onSubBtn: document.querySelector(DOMstrings.addButtonClass)
+  };
+  //console.log(DOMstrings);
+  var setUpEventListeners = function() {
+    nodes.onSubBtn.addEventListener("click", onTransactionSubmit);
+
+    function onTransactionSubmit() {
+      var input = UIController.getInput();
+      // console.log(input);
+
+      //all fields are mandatory
+      if (
+        !(
+          (input.type || input.type === "Type" || input.type === "") &&
+          input.amount &&
+          input.description
+        )
+      )
+        return;
+
+      var type = input.type === "+" ? "inc" : "exp";
+      //console.log(type, input.description, input.amount);
+      var addedItem = dataController.addItem(
+        type,
+        input.description,
+        input.amount
+      );
+      dataController.calculateBudget();
+      // console.log(addedItem);
+      //console.log(dataController.getDataObject());
+
+      UIController.addListItem(
+        addedItem.id,
+        addedItem.description,
+        addedItem.amount,
+        addedItem.percentage,
+        addedItem.type
+      );
+      UIController.displayMonthYear();
+      UIController.displaybudget(dataController.getDataObject());
+      UIController.clearInputFields();
+      //console.log(dataController.getDataObject());
+    }
+  };
+
+  return {
+    init: function() {
+      //update the first line
+      UIController.init();
+      dataController.init();
+      // console.log("init happened");
+      setUpEventListeners();
+    }
+  };
+})();
+appController.init();
+// appController.setUpEventListeners();
